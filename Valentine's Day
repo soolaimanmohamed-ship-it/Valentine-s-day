@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cute Savage Valentine 💘</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg,#ffd6e7,#e0f2ff);
+  text-align:center;
+  padding:20px;
+}
+.card{
+  background:#fff;
+  border-radius:18px;
+  padding:25px;
+  max-width:420px;
+  margin:20px auto;
+  box-shadow:0 10px 30px rgba(0,0,0,.1);
+}
+input,select,button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border-radius:10px;
+  border:1px solid #ddd;
+  font-size:16px;
+}
+button{
+  background:#ff4f93;
+  color:#fff;
+  font-weight:bold;
+  border:none;
+  cursor:pointer;
+}
+.hidden{display:none;}
+.heart{
+  font-size:70px;
+  cursor:pointer;
+  animation:pulse 1.2s infinite;
+}
+@keyframes pulse{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.2)}
+  100%{transform:scale(1)}
+}
+.fadeIn{
+  animation:fade 1s forwards;
+}
+@keyframes fade{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+footer{
+  margin-top:30px;
+  font-size:14px;
+}
+footer a{
+  color:#555;
+  margin:0 8px;
+  text-decoration:none;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- MAIN PAGE -->
+<div class="card" id="mainPage">
+<h2>💘 Cute Savage Valentine</h2>
+<p>Send a Valentine… even <b>you</b> won’t know what it says 😌</p>
+
+<input id="from" placeholder="Your Name 😎">
+<input id="to" placeholder="Their Name 👀">
+
+<select id="type">
+<option value="">Choose Category</option>
+<option value="friend">Friend 😎</option>
+<option value="crush">Crush 😳</option>
+<option value="lover">Lover 💘</option>
+<option value="family">Family 🤍</option>
+<option value="ex">Ex 😌</option>
+</select>
+
+<button onclick="generate()">Send Valentine 💌</button>
+</div>
+
+<!-- SENT PAGE -->
+<div class="card hidden" id="sentBox">
+<h3>💌 Sent!</h3>
+<p>Only they will know what they received 😏</p>
+<input id="shareLink" readonly>
+<button onclick="copy()">Copy Link 🔗</button>
+<button onclick="shareWhatsApp()">Share on WhatsApp 📲</button>
+</div>
+
+<!-- COVER -->
+<div class="card hidden" id="coverBox">
+<h3>💌 Someone sent you a Valentine</h3>
+<p>Tap to open…</p>
+<div class="heart" onclick="openCard()">❤️</div>
+</div>
+
+<!-- RECEIVE -->
+<div class="card hidden" id="receiveBox">
+<h3>Your Valentine 💖</h3>
+<p id="msg"></p>
+<p id="names"></p>
+<p><small>📸 Screenshot it. Don’t explain 😌</small></p>
+<button onclick="reloadHome()">Send One Back 😏</button>
+</div>
+
+<!-- ABOUT PAGE -->
+<div class="card hidden" id="aboutPage">
+<h3>About This Website</h3>
+<p>
+This website is a small creative project made for fun and entertainment.
+It allows users to generate and share surprise Valentine messages in a playful way.
+</p>
+<p>
+No accounts, no login, and no personal data are collected or stored.
+Messages are revealed only when the receiver opens the link.
+</p>
+<button onclick="reloadHome()">⬅ Back</button>
+</div>
+
+<!-- CONTACT PAGE -->
+<div class="card hidden" id="contactPage">
+<h3>Contact Us</h3>
+<p>
+If you have any questions, feedback, or concerns, feel free to contact:
+</p>
+<p><b>📧 soolaimanmohamed@gmail.com</b></p>
+<button onclick="reloadHome()">⬅ Back</button>
+</div>
+
+<footer>
+<a onclick="showAbout()">About</a> |
+<a onclick="showContact()">Contact</a>
+</footer>
+
+<script>
+const messages={
+friend:["Unlimited teasing rights 😌","Iconic friendship vibes 😎","Soulmates can be friends 😏","Bestie energy forever 🔥","Chaos but loyal 😂","You annoy me daily 💘","Safe place with jokes 😄","Friendship > everything","Legend behavior 😎","Chosen by destiny 😌"],
+crush:["I like you… don’t panic 😳","This took courage 💀","Low-key obsessed 😏","Gen-Z signals only 😌","Rent-free in my head 😏","Not flirting… maybe 👀","This is me blushing 😳","Scary but worth it 💘","Surprise 😌","Read again 😏"],
+lover:["You’re my Valentine. Behave 😌","I choose you 🤍","You’re home 🏠","Soft love, strong bond 💞","Peace in human form 💖","Still choosing you 😌","Love feels calm","Not perfect, just us","Every day > yesterday","Always you 💘"],
+family:["Family is everything 🤍","Forever grateful 🙏","You are my strength 💪","Home is you 🏡","Love without conditions","Together always 🫂","Rooted deep 🌳","Safe & warm 🤍","Thankful always","Forever bond 🧡"],
+ex:["No hate, just growth 😌","Lesson learned 💭","Chapter closed 📕","Boundaries matter 🚧","Peace… over there 😏","We evolved 🔥","Past stays past","Closure delivered","Memories only","Moved on 💨"]
+};
+
+function hideAll(){
+  document.querySelectorAll('.card').forEach(c=>c.classList.add('hidden'));
+}
+
+function generate(){
+  let f=from.value.trim(), t=to.value.trim(), tp=type.value;
+  if(!f||!t||!tp){alert("Fill all fields");return;}
+  let m=messages[tp][Math.floor(Math.random()*10)];
+  let data=btoa(JSON.stringify({f,t,m}));
+  let link=location.origin+location.pathname+"?v="+data;
+  hideAll();
+  sentBox.classList.remove("hidden");
+  shareLink.value=link;
+}
+
+function copy(){
+  shareLink.select();
+  document.execCommand("copy");
+  alert("Link copied 😌");
+}
+
+function shareWhatsApp(){
+  let text="💘 I sent you a Valentine… only you can see it 😌\n\n"+shareLink.value;
+  window.open("https://wa.me/?text="+encodeURIComponent(text));
+}
+
+const p=new URLSearchParams(location.search);
+if(p.get("v")){
+  let d=JSON.parse(atob(p.get("v")));
+  hideAll();
+  coverBox.classList.remove("hidden");
+  window.card=d;
+}
+
+function openCard(){
+  hideAll();
+  receiveBox.classList.remove("hidden");
+  msg.innerText=card.m;
+  names.innerText="From: "+card.f+" → To: "+card.t;
+}
+
+function showAbout(){ hideAll(); aboutPage.classList.remove("hidden"); }
+function showContact(){ hideAll(); contactPage.classList.remove("hidden"); }
+function reloadHome(){ window.location.href=location.pathname; }
+</script>
+
+</body>
+</html>
